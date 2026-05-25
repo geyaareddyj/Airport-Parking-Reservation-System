@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aeropark — Airport Parking Reservation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE TRANSITION OVERLAY
+══════════════════════════════════════════════════ -->
+  <div id="pageTransition"></div>
+
+  <!-- ══════════════════════════════════════════════════
+     TOAST NOTIFICATION
+══════════════════════════════════════════════════ -->
+  <div id="toast"></div>
+
+  <!-- ══════════════════════════════════════════════════
+     LOGIN PAGE
+══════════════════════════════════════════════════ -->
+  <div id="loginPage">
+    <!-- Animated runway lines in background -->
+    <div class="runway-bg">
+      <div class="runway-line"></div>
+      <div class="runway-line"></div>
+      <div class="runway-line"></div>
+    </div>
+
+    <div id="loginCard">
+      <!-- Logo / Branding -->
+      <div class="login-brand">
+        <div class="brand-icon">✈</div>
+        <div class="brand-text">
+          <span class="brand-name">AEROPARK</span>
+          <span class="brand-sub">AIRPORT PARKING SYSTEM</span>
+        </div>
+      </div>
+
+      <!-- Airport IATA code display -->
+      <div class="iata-display">HYD · RAJIV GANDHI INT'L AIRPORT</div>
+
+      <!-- Role Tabs -->
+      <div class="role-tabs" role="tablist">
+        <button class="role-tab active" data-role="user" role="tab">
+          <span class="tab-icon">👤</span> PASSENGER
+        </button>
+        <button class="role-tab" data-role="admin" role="tab">
+          <span class="tab-icon">🛂</span> AUTHORITY
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <div class="login-form">
+        <div class="input-group">
+          <label class="input-label">USER ID</label>
+          <input type="text" id="loginUsername" class="login-input" placeholder="Enter your user ID"
+            autocomplete="username" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">ACCESS CODE</label>
+          <input type="password" id="loginPassword" class="login-input" placeholder="Enter access code"
+            autocomplete="current-password" />
+        </div>
+        <div id="loginError" class="login-error"></div>
+        <button id="loginBtn" class="login-btn">
+          <span>CLEAR FOR BOARDING</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <button class="theme-toggle-btn" title="Toggle Theme">🌙</button>
+          </button>
+      </div>
+
+      <!-- Demo credentials hint -->
+      <div id="loginDemoHint" class="demo-hint"></div>
+    </div>
+  </div>
+
+
+</html>

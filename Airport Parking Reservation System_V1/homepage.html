@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Aeropark Homepage</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div id="appShell">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <span class="sb-icon">✈</span>
+
+          <div>
+            <div class="sb-name">AEROPARK</div>
+            <div class="sb-code">HYD</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+
+        <div class="nav-section-label">OPERATIONS</div>
+
+        <a class="nav-item active">
+          <span class="nav-icon">🅿</span>
+          <span class="nav-label">Parking Grid</span>
+        </a>
+
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn">🌙</button>
+      </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main id="mainContent">
+
+      <!-- TOP BAR -->
+      <header id="topBar">
+
+        <div class="topbar-left">
+          <div class="page-title">PARKING GRID</div>
+
+          <div class="page-subtitle">
+            Real-time slot availability
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="clock-widget">
+            --:-- --
+          </div>
+        </div>
+
+      </header>
+
+      <!-- DASHBOARD -->
+      <section id="page-dashboard" class="page-section">
+
+        <!-- CONTROLS -->
+        <div class="controls-bar">
+
+          <div class="control-group">
+            <label class="ctrl-label">TERMINAL</label>
+
+            <div class="admin-loc-badge">
+              ✈ Terminal 1 - Domestic
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="ctrl-label">LEVEL</label>
+
+            <div class="floor-tabs">
+              <button class="floor-tab active">Level 1</button>
+              <button class="floor-tab">Level 2</button>
+              <button class="floor-tab">Level 3</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="ctrl-label">FILTER</label>
+
+            <select class="ctrl-select">
+              <option>All Slots</option>
+              <option>Available</option>
+              <option>Occupied</option>
+              <option>Reserved</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-strip">
+
+          <div class="stat-tile">
+            <div class="stat-num">40</div>
+            <div class="stat-lbl">TOTAL SLOTS</div>
+          </div>
+
+          <div class="stat-tile stat-green">
+            <div class="stat-num">19</div>
+            <div class="stat-lbl">AVAILABLE</div>
+          </div>
+
+          <div class="stat-tile stat-red">
+            <div class="stat-num">10</div>
+            <div class="stat-lbl">OCCUPIED</div>
+          </div>
+
+          <div class="stat-tile stat-amber">
+            <div class="stat-num">11</div>
+            <div class="stat-lbl">RESERVED</div>
+          </div>
+
+        </div>
+
+        <!-- LEGEND -->
+        <div class="legend-bar">
+          <span class="legend-item">
+            <span class="leg-dot dot-available"></span>
+            Available
+          </span>
+
+          <span class="legend-item">
+            <span class="leg-dot dot-occupied"></span>
+            Occupied
+          </span>
+
+          <span class="legend-item">
+            <span class="leg-dot dot-reserved"></span>
+            Reserved
+          </span>
+        </div>
+
+        <!-- GRID PLACEHOLDER -->
+        <div class="parking-grid-container">
+
+          <div style="
+          padding:40px;
+          text-align:center;
+          font-size:20px;
+          opacity:0.8;
+        ">
+            Parking Slot Grid Preview
+          </div>
+
+        </div>
+
+      </section>
+
+  </div>
+
+</body>
+
+</html>
