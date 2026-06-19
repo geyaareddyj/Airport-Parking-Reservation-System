@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aeropark — Airport Parking Reservation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+     PAGE TRANSITION OVERLAY
+══════════════════════════════════════════════════ -->
+  <div id="pageTransition"></div>
+
+  <!-- ══════════════════════════════════════════════════
+     TOAST NOTIFICATION
+══════════════════════════════════════════════════ -->
+  <div id="toast"></div>
+
+  <!-- ══════════════════════════════════════════════════
+     LOGIN PAGE
+══════════════════════════════════════════════════ -->
+  <div id="loginPage">
+    <!-- Animated runway lines in background -->
+    <div class="runway-bg">
+      <div class="runway-line"></div>
+      <div class="runway-line"></div>
+      <div class="runway-line"></div>
+    </div>
+
+    <div id="loginCard">
+      <!-- Logo / Branding -->
+      <div class="login-brand">
+        <div class="brand-icon">✈</div>
+        <div class="brand-text">
+          <span class="brand-name">AEROPARK</span>
+          <span class="brand-sub">AIRPORT PARKING SYSTEM</span>
+        </div>
+      </div>
+
+      <!-- Airport IATA code display -->
+      <div class="iata-display">HYD · RAJIV GANDHI INT'L AIRPORT</div>
+
+      <!-- Role Tabs -->
+      <div class="role-tabs" role="tablist">
+        <button class="role-tab active" data-role="user" role="tab">
+          <span class="tab-icon">👤</span> PASSENGER
+        </button>
+        <button class="role-tab" data-role="admin" role="tab">
+          <span class="tab-icon">🛂</span> AUTHORITY
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <div class="login-form">
+        <div class="input-group">
+          <label class="input-label">USER ID</label>
+          <input type="text" id="loginUsername" class="login-input" placeholder="Enter your user ID"
+            autocomplete="username" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">ACCESS CODE</label>
+          <input type="password" id="loginPassword" class="login-input" placeholder="Enter access code"
+            autocomplete="current-password" />
+        </div>
+        <div id="loginError" class="login-error"></div>
+        <button id="loginBtn" class="login-btn">
+          <span>CLEAR FOR BOARDING</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <button class="theme-toggle-btn" title="Toggle Theme">🌙</button>
+          </button>
+      </div>
+
+      <!-- Demo credentials hint -->
+      <div id="loginDemoHint" class="demo-hint"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     APP SHELL (shown after login)
+══════════════════════════════════════════════════ -->
+  <div id="appShell" class="hidden">
+
+    <!-- ── SIDEBAR ───────────────────────────────── -->
+    <aside id="sidebar">
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <span class="sb-icon">✈</span>
+          <div>
+            <div class="sb-name">AEROPARK</div>
+            <div class="sb-code">HYD</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User pill -->
+      <div id="navUserPill" class="nav-user-pill"></div>
+
+      <!-- Navigation -->
+      <nav class="sidebar-nav">
+        <!-- Shared -->
+        <div class="nav-section-label">OPERATIONS</div>
+        <a class="nav-item" data-page="dashboard" role="button" tabindex="0">
+          <span class="nav-icon">🅿</span>
+          <span class="nav-label">Parking Grid</span>
+        </a>
+
+        <!-- User Only -->
+        <a class="nav-item" data-page="trip-planner" data-user-only role="button" tabindex="0">
+          <span class="nav-icon">🗺</span>
+          <span class="nav-label">Trip Planner</span>
+        </a>
+        <a class="nav-item" data-page="my-reservations" data-user-only role="button" tabindex="0">
+          <span class="nav-icon">🎫</span>
+          <span class="nav-label">My Bookings</span>
+        </a>
+
+        <!-- Admin Only -->
+        <div class="nav-section-label" data-admin-only>MANAGEMENT</div>
+        <a class="nav-item" data-page="admin-reservations" data-admin-only role="button" tabindex="0">
+          <span class="nav-icon">📋</span>
+          <span class="nav-label">All Reservations</span>
+        </a>
+        <a class="nav-item" data-page="admin-analytics" data-admin-only role="button" tabindex="0">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Analytics</span>
+        </a>
+        <a class="nav-item" data-page="admin-settings" data-admin-only role="button" tabindex="0">
+          <span class="nav-icon">⚙</span>
+          <span class="nav-label">Pricing</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn" title="Toggle Theme">🌙</button>
+        <button id="logoutBtn" class="logout-btn">
+          <span>⏻</span> SIGN OUT
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ──────────────────────────── -->
+    <main id="mainContent">
+
+      <!-- ┌── TOP BAR ──────────────────────────────┐ -->
+      <header id="topBar">
+        <div class="topbar-left">
+          <div id="dashPageTitle" class="page-title">PARKING GRID</div>
+          <div id="dashPageSubtitle" class="page-subtitle"></div>
+        </div>
+        <div class="topbar-right">
+          <div class="clock-widget" id="clockWidget">--:-- --</div>
+          <button class="theme-toggle-btn mobile-theme" title="Toggle Theme">🌙</button>
+        </div>
+      </header>
+
+      <!-- ┌── PAGE: DASHBOARD ──────────────────────┐ -->
+      <section id="page-dashboard" class="page-section hidden">
+
+        <!-- Controls bar -->
+        <div class="controls-bar">
+          <!-- Location select (user) / location badge (admin) -->
+          <div id="locationSelectWrap" class="control-group">
+            <label class="ctrl-label">TERMINAL</label>
+            <select id="locationSelect" class="ctrl-select"></select>
+          </div>
+          <div id="adminLocName" class="admin-loc-badge"></div>
+
+          <!-- Floor tabs -->
+          <div class="control-group">
+            <label class="ctrl-label">LEVEL</label>
+            <div id="floorTabs" class="floor-tabs"></div>
+          </div>
+
+          <!-- Filter -->
+          <div class="control-group">
+            <label class="ctrl-label">FILTER</label>
+            <select id="slotFilter" class="ctrl-select">
+              <option value="all">All Slots</option>
+              <option value="available">Available</option>
+              <option value="occupied">Occupied</option>
+              <option value="reserved">Reserved</option>
+            </select>
+          </div>
+
+          <!-- Rate badge (admin only) -->
+          <div id="rateBadge" class="rate-badge" style="display:none"></div>
+        </div>
+
+        <!-- Stats strip -->
+        <div class="stats-strip">
+          <div class="stat-tile">
+            <div class="stat-num" id="statTotal">—</div>
+            <div class="stat-lbl">TOTAL SLOTS</div>
+          </div>
+          <div class="stat-tile stat-green">
+            <div class="stat-num" id="statAvailable">—</div>
+            <div class="stat-lbl">AVAILABLE</div>
+          </div>
+          <div class="stat-tile stat-red">
+            <div class="stat-num" id="statOccupied">—</div>
+            <div class="stat-lbl">OCCUPIED</div>
+          </div>
+          <div class="stat-tile stat-amber">
+            <div class="stat-num" id="statReserved">—</div>
+            <div class="stat-lbl">RESERVED</div>
+          </div>
+        </div>
+
+        <!-- Slot grid legend -->
+        <div class="legend-bar">
+          <span class="legend-item"><span class="leg-dot dot-available"></span> Available</span>
+          <span class="legend-item"><span class="leg-dot dot-occupied"></span> Occupied</span>
+          <span class="legend-item"><span class="leg-dot dot-reserved"></span> Reserved</span>
+        </div>
+
+        <!-- Parking grid -->
+        <div id="parkingGridContainer" class="parking-grid-container"></div>
+      </section>
+
+      <!-- ┌── PAGE: TRIP PLANNER (user only) ───────┐ -->
+      <section id="page-trip-planner" class="page-section hidden">
+        <div class="section-card">
+          <div class="section-card-title">✈ FLIGHT & TRIP PLANNER</div>
+          <p class="section-card-desc">Check crowd predictions and parking availability before heading to the airport.
+          </p>
+
+          <div class="planner-grid">
+            <div class="planner-form">
+              <div class="input-group">
+                <label class="input-label">SELECT TERMINAL</label>
+                <select id="tripLocationSelect" class="ctrl-select full-select">
+                  <!-- Populated by JS -->
+                </select>
+              </div>
+              <div class="input-group">
+                <label class="input-label">ARRIVAL TIME</label>
+                <select id="tripTimeSelect" class="ctrl-select full-select">
+                  <option value="EarlyMorning">Early Morning (4 AM – 7 AM)</option>
+                  <option value="Morning">Morning (7 AM – 11 AM)</option>
+                  <option value="Afternoon">Afternoon (11 AM – 3 PM)</option>
+                  <option value="Evening" selected>Evening (3 PM – 7 PM)</option>
+                  <option value="Night">Night (7 PM – 11 PM)</option>
+                  <option value="LateNight">Late Night (11 PM – 4 AM)</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label class="input-label">VEHICLE TYPE</label>
+                <select id="tripVehicleSelect" class="ctrl-select full-select">
+                  <option value="2w">🛵 Two Wheeler</option>
+                  <option value="4w">🚗 Four Wheeler</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Prediction Result Card -->
+            <div id="tripResultCard" class="trip-result-card">
+              <div class="trip-result-header">FORECAST</div>
+              <div class="trip-metrics">
+                <div class="trip-metric">
+                  <div class="trip-metric-label">CROWD LEVEL</div>
+                  <div class="trip-metric-value" id="tripCrowd">—</div>
+                </div>
+                <div class="trip-metric">
+                  <div class="trip-metric-label">PARKING STATUS</div>
+                  <div class="trip-metric-value" id="tripParking">—</div>
+                </div>
+                <div class="trip-metric">
+                  <div class="trip-metric-label">EST. WALK TIME</div>
+                  <div class="trip-metric-value" id="tripWalkTime">—</div>
+                </div>
+              </div>
+              <div class="trip-tip" id="tripTip">Select time above for prediction</div>
+              <div class="trip-availability-bar">
+                <div class="trip-bar-label">SLOT AVAILABILITY</div>
+                <div class="trip-bar-track">
+                  <div class="trip-bar-fill" id="tripBarFill"></div>
+                </div>
+                <div class="trip-bar-pct" id="tripBarPct">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ┌── PAGE: MY RESERVATIONS (user only) ────┐ -->
+      <section id="page-my-reservations" class="page-section hidden">
+        <div class="section-card">
+          <div class="section-card-title">🎫 MY BOOKINGS</div>
+          <div id="myReservationsList" class="reservations-list"></div>
+        </div>
+      </section>
+
+      <!-- ┌── PAGE: ADMIN RESERVATIONS ──────────────┐ -->
+      <section id="page-admin-reservations" class="page-section hidden">
+        <div class="section-card">
+          <div class="section-card-title">📋 ALL RESERVATIONS — <span id="adminResLocName"></span></div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>BOOKING ID</th>
+                  <th>PASSENGER</th>
+                  <th>LEVEL</th>
+                  <th>SLOT</th>
+                  <th>TYPE</th>
+                  <th>VEHICLE</th>
+                  <th>ENTRY TIME</th>
+                  <th>AMOUNT</th>
+                </tr>
+              </thead>
+              <tbody id="adminResBody">
+                <tr>
+                  <td colspan="8" class="empty-cell">Loading…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ┌── PAGE: ADMIN ANALYTICS ─────────────────┐ -->
+      <section id="page-admin-analytics" class="page-section hidden">
+        <div class="section-card">
+          <div class="section-card-title" id="analyticsLocName">📊 ANALYTICS</div>
+
+          <div class="analytics-summary">
+            <div class="analytics-kpi">
+              <div class="kpi-label">TOTAL REVENUE</div>
+              <div class="kpi-value" id="totalRevenue">₹0</div>
+            </div>
+            <div class="analytics-kpi">
+              <div class="kpi-label">TOTAL BOOKINGS</div>
+              <div class="kpi-value" id="totalBookings">0</div>
+            </div>
+            <div class="analytics-kpi">
+              <div class="kpi-label">PEAK HOUR</div>
+              <div class="kpi-value" id="peakHourLabel">—</div>
+            </div>
+          </div>
+
+          <div id="revenueRows" class="revenue-breakdown"></div>
+
+          <div class="chart-section">
+            <div class="chart-title">HOURLY BOOKING ACTIVITY</div>
+            <div id="peakChart" class="bar-chart"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ┌── PAGE: ADMIN SETTINGS ──────────────────┐ -->
+      <section id="page-admin-settings" class="page-section hidden">
+        <div class="section-card">
+          <div class="section-card-title">⚙ PRICING CONFIGURATION</div>
+          <div id="costSettingsContainer" class="cost-settings"></div>
+          <button id="saveCostsBtn" class="btn btn-primary save-btn">💾 SAVE CONFIGURATION</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════════════ -->
+
+  <!-- RESERVE MODAL (User) -->
+  <div id="reserveModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">✈ RESERVE PARKING SLOT</span>
+        <button class="modal-close" onclick="closeAllModals()">✕</button>
+      </div>
+
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step-dot active" data-step="1">1</div>
+        <div class="step-line"></div>
+        <div class="step-dot" data-step="2">2</div>
+        <div class="step-line"></div>
+        <div class="step-dot" data-step="3">✓</div>
+      </div>
+
+      <!-- Step 1: Details -->
+      <div class="payment-step active" id="step1">
+        <div class="slot-info-banner" id="resSlotInfo"></div>
+        <div class="input-group">
+          <label class="input-label">VEHICLE REGISTRATION</label>
+          <input type="text" id="resVehicle" class="login-input" placeholder="e.g. TS09AB1234" maxlength="12" />
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label class="input-label">DURATION (HRS)</label>
+            <input type="number" id="resDuration" class="login-input" value="1" min="1" max="24" />
+          </div>
+          <div class="input-group">
+            <label class="input-label">DATE</label>
+            <input type="date" id="resDate" class="login-input" />
+          </div>
+        </div>
+        <div class="price-summary" id="priceSummary">
+          <div class="price-row"><span>Base rate:</span><span id="baseRate">—</span></div>
+          <div class="price-row"><span>Tax (GST):</span><span id="taxAmt">—</span></div>
+          <div class="price-row price-total"><span>TOTAL:</span><span id="payTotal">—</span></div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="User_goToPayment()">NEXT → PAYMENT</button>
+      </div>
+
+      <!-- Step 2: Payment -->
+      <div class="payment-step" id="step2">
+        <div class="pay-amount-display" id="payAmountDisplay"></div>
+        <div class="pay-options">
+          <button class="pay-option" data-pay="upi" onclick="User_selectPayMethod('upi')">
+            <span class="pay-icon">📱</span><span>UPI</span>
+          </button>
+          <button class="pay-option" data-pay="card" onclick="User_selectPayMethod('card')">
+            <span class="pay-icon">💳</span><span>CARD</span>
+          </button>
+          <button class="pay-option" data-pay="netbanking" onclick="User_selectPayMethod('netbanking')">
+            <span class="pay-icon">🏦</span><span>NET BANKING</span>
+          </button>
+          <button class="pay-option" data-pay="cash" onclick="User_selectPayMethod('cash')">
+            <span class="pay-icon">💵</span><span>CASH</span>
+          </button>
+        </div>
+        <button id="payBtn" class="btn btn-primary btn-full" onclick="User_confirmPayment()">CONFIRM PAYMENT</button>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div class="payment-step" id="step3">
+        <div class="success-anim">
+          <div class="success-icon">✓</div>
+          <div class="success-title">BOOKING CONFIRMED</div>
+          <div class="success-sub">Your parking slot is secured. Have a safe flight!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN OCCUPY MODAL -->
+  <div id="occupyModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">🔴 MARK SLOT OCCUPIED</span>
+        <button class="modal-close" onclick="closeAllModals()">✕</button>
+      </div>
+      <div class="slot-info-banner" id="occupySlotInfo"></div>
+      <div class="input-group">
+        <label class="input-label">VEHICLE REGISTRATION</label>
+        <input type="text" id="occupyVehicle" class="login-input" placeholder="e.g. TS09AB1234" maxlength="12" />
+      </div>
+      <button class="btn btn-danger btn-full" onclick="Admin_confirmOccupy()">CONFIRM OCCUPIED</button>
+    </div>
+  </div>
+
+  <!-- ADMIN RESERVE MODAL -->
+  <div id="adminReserveModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">🟡 RESERVE SLOT</span>
+        <button class="modal-close" onclick="closeAllModals()">✕</button>
+      </div>
+      <div class="slot-info-banner" id="adminResSlotInfo"></div>
+      <div class="input-group">
+        <label class="input-label">PASSENGER NAME</label>
+        <input type="text" id="adminResName" class="login-input" placeholder="Full name" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">VEHICLE REGISTRATION</label>
+        <input type="text" id="adminResVehicle" class="login-input" placeholder="e.g. TS09AB1234" maxlength="12" />
+      </div>
+      <button class="btn btn-warning btn-full" onclick="Admin_confirmReserve()">CONFIRM RESERVATION</button>
+    </div>
+  </div>
+
+  <!-- SCRIPTS — load order matters: data → auth → ui → admin → user → main -->
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/user.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/popup-fix.js"></script>
+</body>
+
+</html>
